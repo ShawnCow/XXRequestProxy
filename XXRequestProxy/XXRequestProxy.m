@@ -30,6 +30,10 @@ void xxDyConvertParameter(id parameter, NSDictionary **headers, NSDictionary **q
         if ([parameter respondsToSelector:@selector(xx_HTTPParamterKeyMimeTypeDictionary)]) {
             tempMineKeyDic = [(id<XXParameterVerifyAndPickUpSupport>)parameter xx_HTTPParamterKeyMimeTypeDictionary];
         }
+        NSDictionary *tempFileNameDic = nil;
+        if ([parameter respondsToSelector:@selector(xx_HTTPParamterKeyFileNameDictionary)]) {
+            tempFileNameDic = [(id<XXParameterVerifyAndPickUpSupport>)parameter xx_HTTPParamterKeyFileNameDictionary];
+        }
         NSMutableDictionary *tempParameterDictionary = [NSMutableDictionary dictionary];
         NSMutableDictionary *tempQueryDictionary = [NSMutableDictionary dictionary];
         NSMutableDictionary *tempHeaderDictionary = [NSMutableDictionary dictionary];
@@ -143,12 +147,14 @@ void xxDyConvertParameter(id parameter, NSDictionary **headers, NSDictionary **q
             if ([tempProtocolNames containsObject:@"XXHTTPParameterForm"]) {
                 isHandle = YES;
                 NSString *mimeType = [tempMineKeyDic objectForKey:propertyNameText];
+                NSString *fileName = [tempFileNameDic objectForKey:propertyNameText];
+                
                 if ([value isKindOfClass:[NSString class]]) {
-                    XXHTTPPostFormDataPart *tempItem = [[XXHTTPPostFormDataPart alloc]initWithData:[(NSString *)value dataUsingEncoding:NSUTF8StringEncoding] mimeType:mimeType filename:nil name:tempMapperKey];
+                    XXHTTPPostFormDataPart *tempItem = [[XXHTTPPostFormDataPart alloc]initWithData:[(NSString *)value dataUsingEncoding:NSUTF8StringEncoding] mimeType:mimeType filename:fileName name:tempMapperKey];
                     [tempFormDatas addObject:tempItem];
                 }else if ([value isKindOfClass:[NSData class]])
                 {
-                    XXHTTPPostFormDataPart *tempItem = [[XXHTTPPostFormDataPart alloc]initWithData:value mimeType:mimeType filename:nil name:tempMapperKey];
+                    XXHTTPPostFormDataPart *tempItem = [[XXHTTPPostFormDataPart alloc]initWithData:value mimeType:mimeType filename:fileName name:tempMapperKey];
                     [tempFormDatas addObject:tempItem];
                 }else if ([(NSObject *)value respondsToSelector:@selector(xx_HTTPParameterFormDataForKey:mimeType:fileName:)])
                 {

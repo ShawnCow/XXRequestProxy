@@ -26,6 +26,11 @@
 - (NSDictionary *)xx_HTTPParamterKeyMimeTypeDictionary;
 
 /**
+ form的文件名
+ */
+- (NSDictionary *)xx_HTTPParamterKeyFileNameDictionary;
+
+/**
  通过key获取form data的信息
         key:属性
         mimeType:类型
